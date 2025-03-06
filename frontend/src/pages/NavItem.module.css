@@ -1,0 +1,29 @@
+.nav-container {
+  display: flex;
+  column-gap: 1.4rem;
+  background-color: cornflowerblue;
+  padding: 5px 0;
+}
+
+.nav-container button {
+  margin-left: auto;
+  background-color: burlywood;
+  border-radius: 7px;
+  padding: 4px 8px;
+  color: black;
+}
+
+.nav-container a {
+  color: white;
+}
+.theme {
+  position: absolute;
+  left: 92%;
+  top: 1%;
+  color: white;
+}
+.logout {
+  position: absolute;
+  left: 97%;
+  color: white;
+}

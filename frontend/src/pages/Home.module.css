@@ -1,0 +1,106 @@
+.container {
+  flex-grow: 1;
+}
+.container h2 {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.container .add-btn {
+  position: fixed;
+  margin-left: 90%;
+  padding: 7px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #3498db;
+  border: none;
+  color: #fff;
+  border-radius: 4px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.container .add-btn:hover {
+  background-color: #2980b9;
+}
+
+.todo-list-container {
+  margin-top: 5%;
+  display: flex;
+  padding: 15px;
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.1);
+  gap: 20px;
+  height: 81%;
+}
+
+.todo-list-item {
+  border-radius: 6px;
+  height: 160px;
+  width: 160px;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.todo-list-item:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+.todo-list-item h3 {
+  text-align: center;
+  max-width: 4px;
+  padding: 10px;
+  margin-top: 4px;
+}
+.todo-list-item p {
+  padding: 10px;
+}
+
+.todo-list-item p span {
+  cursor: pointer;
+}
+
+.drop-down {
+  border-radius: 6px;
+  height: max-content;
+  min-height: 140px;
+  width: 140px;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.modify-icons {
+  position: absolute;
+  display: flex;
+  margin-left: 9.5%;
+  margin-top: 2%;
+  gap: 0.4rem;
+  /* cursor: pointer; */
+}
+
+.modify-icons .edit {
+  cursor: pointer;
+  color: #3498db;
+}
+
+.modify-icons .delete {
+  cursor: pointer;
+  color: red;
+}
+
+.model-box {
+  text-align: left;
+}
+
+.btn {
+  padding: 7px;
+  width: 100%;
+  background-color: rgb(12, 134, 12);
+  font-size: 16px;
+  color: #fff;
+  border-radius: 7px;
+  border: none;
+}
+
+.btn:hover {
+  background-color: rgb(4, 75, 4);
+}

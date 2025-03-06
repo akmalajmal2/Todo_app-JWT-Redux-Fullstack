@@ -1,0 +1,146 @@
+import { useDispatch, useSelector } from "react-redux";
+import styles from "./Home.module.css";
+import { useEffect, useState } from "react";
+import {
+  addTodo,
+  deleteTodo,
+  fetchTodos,
+  updateTodo,
+} from "../feature/todoSlice";
+import Modal from "../components/Modal";
+import {
+  MdExpandMore,
+  MdExpandLess,
+  MdDeleteOutline,
+  MdEdit,
+} from "react-icons/md";
+
+const Home = () => {
+  const { todos, loading } = useSelector((state) => state.todo);
+  const { user } = useSelector((state) => state.auth);
+  const [isExpanded, setIsExpanded] = useState(null);
+  const [isModalOpen, setIsModelOpen] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [formData, setFormData] = useState({
+    id: "",
+    title: "",
+    description: "",
+  });
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchTodos(user.id));
+  }, [dispatch]);
+
+  const open = () => setIsModelOpen(true);
+  const close = () => setIsModelOpen(false);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevFormdata) => ({ ...prevFormdata, [name]: value }));
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if (isEdit) dispatch(updateTodo(formData));
+    else dispatch(addTodo({ ...formData, user_id: user.id }));
+    close();
+    dispatch(fetchTodos(user.id));
+  };
+
+  const toggleExpand = (id) => {
+    setIsExpanded(isExpanded === id ? null : id);
+  };
+
+  const handleDeleteTodo = (id) => {
+    dispatch(deleteTodo(id));
+    dispatch(fetchTodos(user.id));
+  };
+
+  const handleEdit = (todo) => {
+    setIsEdit(true);
+    setFormData({
+      title: todo.title,
+      description: todo.description,
+      id: todo.id,
+    });
+    open();
+  };
+
+  return (
+    <div className={styles["container"]}>
+      <h2>Todo List</h2>
+      <button onClick={open} className={styles["add-btn"]}>
+        Add Todo
+      </button>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={close}
+        buttonText={isEdit ? "Update Todo" : "Add Todo"}
+      >
+        <h2>{isEdit ? "Update Todo" : "Add Todo"}</h2>
+        <form onSubmit={submitHandler}>
+          <div className={styles["model-box"]}>
+            <label>Title</label>
+            <input
+              name="title"
+              placeholder="Enter Title"
+              onChange={handleInputChange}
+              value={formData.title}
+              required
+            />
+          </div>
+          <div className={styles["model-box"]}>
+            <label>Description</label>
+            <textarea
+              name="description"
+              placeholder="Enter Description"
+              onChange={handleInputChange}
+              value={formData.description}
+              required
+            />
+            <button className={styles["btn"]}>
+              {isEdit ? "Update" : "Add"}
+            </button>
+          </div>
+        </form>
+      </Modal>
+
+      <div className={styles["todo-list-container"]}>
+        {todos.map((todo, index) => (
+          <div
+            key={index}
+            className={
+              isExpanded === todo.id
+                ? `${styles["todo-list-item"]} ${styles["drop-down"]}`
+                : styles["todo-list-item"]
+            }
+          >
+            <div className={styles["modify-icons"]}>
+              <MdDeleteOutline
+                onClick={() => handleDeleteTodo(todo.id)}
+                className={styles["edit"]}
+              />
+              <MdEdit
+                onClick={() => handleEdit(todo)}
+                className={styles["delete"]}
+              />
+            </div>
+            <h3>{todo.title}</h3>
+
+            <p>
+              {isExpanded === todo.id
+                ? todo.description
+                : todo.description?.slice(0, 20)}
+              <span onClick={() => toggleExpand(todo.id)}>
+                {isExpanded === todo.id ? <MdExpandLess /> : <MdExpandMore />}
+              </span>
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+export default Home;

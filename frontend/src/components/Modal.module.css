@@ -1,0 +1,75 @@
+.modal-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40%;
+  padding: 18px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  animation: fadeIn 0.5s ease-in;
+}
+
+.modal-content {
+  text-align: center;
+}
+
+.modal-group {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #555;
+}
+
+input,
+textarea {
+  width: 100%;
+  border-radius: 5px;
+  padding: 6px;
+  border: 1px solid #ccc;
+}
+
+.btn {
+  padding: 7px;
+  width: 100%;
+  background-color: rgb(12, 134, 12);
+  font-size: 16px;
+  color: #fff;
+  border-radius: 7px;
+  border: none;
+}
+
+button:hover {
+  background-color: rgb(4, 75, 4);
+}
+
+.close {
+  position: absolute;
+  top: 9%;
+  left: 92%;
+  cursor: pointer;
+}
+.close:hover {
+  transform: scale(1.2);
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  75% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
