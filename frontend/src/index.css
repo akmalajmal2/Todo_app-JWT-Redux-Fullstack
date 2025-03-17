@@ -19,8 +19,9 @@
 }
 
 .dark-theme {
-  background-color: black;
-  color: #fff;
+  background-color: black !important;
+  /* color: #fff; */
+  /* border: 2px solid #fff; */
 }
 
 .light-theme {

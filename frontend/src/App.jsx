@@ -21,7 +21,7 @@ function App() {
     {
       path: "/",
       element: token ? <Layout /> : <Navigate to="/login" />,
-      children: [{ path: "/", element: <Home /> }],
+      children: [{ index: true, element: <Home /> }],
     },
     { path: "/login", element: <Login /> },
     { path: "/register", element: <Register /> },

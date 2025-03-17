@@ -44,7 +44,7 @@ exports.login = async (req, res) => {
   // console.log("heeee", refreshToken, accessToken);
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production", //secure:true
+    secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
     path: "/api/auth/refresh-token",
   });
@@ -55,9 +55,6 @@ exports.login = async (req, res) => {
 };
 
 exports.logout = async (req, res) => {
-  // res.clearCookie("token");
-  // res.clearCookie("refreshToken");
-  // res.json({ message: "Logout Successfull" });
   res.clearCookie("refreshToken", { path: "/api/auth/refresh-token" });
   res.json({ message: "Logged out" });
 };
@@ -67,7 +64,6 @@ exports.refreshToken = async (req, res) => {
   if (!refreshToken) return res.status(401).json({ message: "Unauthorized" });
   jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET, (err, decoded) => {
     if (err) return res.status(403).json({ message: "Invalid refresh token" });
-    console.log("need", decoded.id);
     const newAccessToken = generateToken({ id: decoded.id });
     res.json({
       accessToken: newAccessToken,

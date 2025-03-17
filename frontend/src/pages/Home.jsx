@@ -7,13 +7,8 @@ import {
   fetchTodos,
   updateTodo,
 } from "../feature/todoSlice";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import Modal from "../components/Modal";
-import {
-  MdExpandMore,
-  MdExpandLess,
-  MdDeleteOutline,
-  MdEdit,
-} from "react-icons/md";
 
 const Home = () => {
   const { todos, loading } = useSelector((state) => state.todo);
@@ -30,7 +25,7 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(fetchTodos(user.id));
-  }, [dispatch]);
+  }, [dispatch, user.id]);
 
   const open = () => setIsModelOpen(true);
   const close = () => setIsModelOpen(false);
@@ -40,20 +35,27 @@ const Home = () => {
     setFormData((prevFormdata) => ({ ...prevFormdata, [name]: value }));
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    if (isEdit) dispatch(updateTodo(formData));
-    else dispatch(addTodo({ ...formData, user_id: user.id }));
+    if (isEdit) await dispatch(updateTodo(formData));
+    else await dispatch(addTodo({ ...formData, user_id: user.id }));
     close();
+
+    setFormData({
+      id: "",
+      title: "",
+      description: "",
+    });
     dispatch(fetchTodos(user.id));
+    setIsEdit(false);
   };
 
   const toggleExpand = (id) => {
     setIsExpanded(isExpanded === id ? null : id);
   };
 
-  const handleDeleteTodo = (id) => {
-    dispatch(deleteTodo(id));
+  const handleDeleteTodo = async (id) => {
+    await dispatch(deleteTodo(id));
     dispatch(fetchTodos(user.id));
   };
 
@@ -68,12 +70,33 @@ const Home = () => {
   };
 
   return (
-    <div className={styles["container"]}>
-      <h2>Todo List</h2>
-      <button onClick={open} className={styles["add-btn"]}>
-        Add Todo
-      </button>
-
+    <div className={styles["card-container"]}>
+      <div className={styles.header}>
+        <h1>Todo Application</h1>
+        <button className={styles["add-btn"]} onClick={open}>
+          Add Todo
+        </button>
+      </div>
+      <div className={styles["card-grid"]}>
+        {todos.map((todo, index) => (
+          <div key={index} className={styles["card"]}>
+            <div className={styles["card-headers"]}>
+              <h2>{todo.title}</h2>
+              <div className={styles["card-icons"]}>
+                <FaEdit
+                  className={styles["edit-icon"]}
+                  onClick={() => handleEdit(todo)}
+                />
+                <FaTrash
+                  className={styles["delete-icon"]}
+                  onClick={() => handleDeleteTodo(todo.id)}
+                />
+              </div>
+            </div>
+            <p>{todo.description}</p>
+          </div>
+        ))}
+      </div>
       <Modal
         isOpen={isModalOpen}
         onClose={close}
@@ -106,40 +129,6 @@ const Home = () => {
           </div>
         </form>
       </Modal>
-
-      <div className={styles["todo-list-container"]}>
-        {todos.map((todo, index) => (
-          <div
-            key={index}
-            className={
-              isExpanded === todo.id
-                ? `${styles["todo-list-item"]} ${styles["drop-down"]}`
-                : styles["todo-list-item"]
-            }
-          >
-            <div className={styles["modify-icons"]}>
-              <MdDeleteOutline
-                onClick={() => handleDeleteTodo(todo.id)}
-                className={styles["edit"]}
-              />
-              <MdEdit
-                onClick={() => handleEdit(todo)}
-                className={styles["delete"]}
-              />
-            </div>
-            <h3>{todo.title}</h3>
-
-            <p>
-              {isExpanded === todo.id
-                ? todo.description
-                : todo.description?.slice(0, 20)}
-              <span onClick={() => toggleExpand(todo.id)}>
-                {isExpanded === todo.id ? <MdExpandLess /> : <MdExpandMore />}
-              </span>
-            </p>
-          </div>
-        ))}
-      </div>
     </div>
   );
 };
